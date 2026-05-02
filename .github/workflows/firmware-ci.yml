@@ -46,7 +46,9 @@ jobs:
         working-directory: firmware/esp32-csi-node
         run: |
           . $IDF_PATH/export.sh
-          if [ "${{ matrix.variant }}" != "8mb" ] && [ "${{ matrix.variant }}" != "8mb-spiram" ]; then
+          if [ "${{ matrix.variant }}" = "8mb-spiram" ]; then
+            cp "${{ matrix.sdkconfig }}" sdkconfig.defaults
+          elif [ "${{ matrix.variant }}" != "8mb" ]; then
             cp "${{ matrix.sdkconfig }}" sdkconfig.defaults
           fi
           idf.py set-target esp32s3

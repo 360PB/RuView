@@ -44,3 +44,6 @@ CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
 
 # WiFi IRAM optimization
 CONFIG_ESP_WIFI_EXTRA_IRAM_OPT=y
+
+# Fix Tmr Svc stack overflow (adaptive_ctrl timer callbacks)
+CONFIG_FREERTOS_TIMER_TASK_STACK_DEPTH=4096
