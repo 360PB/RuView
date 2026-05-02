@@ -26,6 +26,12 @@ jobs:
             size_limit_kb: 1100
             artifact_app: esp32-csi-node.bin
             artifact_pt: partition-table.bin
+          - variant: 8mb-spiram
+            sdkconfig: sdkconfig.defaults.spiram
+            partition_table_name: partitions_display.csv
+            size_limit_kb: 1100
+            artifact_app: esp32-csi-node-spiram.bin
+            artifact_pt: partition-table.bin
           - variant: 4mb
             sdkconfig: sdkconfig.defaults.4mb
             partition_table_name: partitions_4mb.csv
@@ -40,7 +46,7 @@ jobs:
         working-directory: firmware/esp32-csi-node
         run: |
           . $IDF_PATH/export.sh
-          if [ "${{ matrix.variant }}" != "8mb" ]; then
+          if [ "${{ matrix.variant }}" != "8mb" ] && [ "${{ matrix.variant }}" != "8mb-spiram" ]; then
             cp "${{ matrix.sdkconfig }}" sdkconfig.defaults
           fi
           idf.py set-target esp32s3
@@ -104,7 +110,7 @@ jobs:
           mkdir -p release-staging
           cp build/esp32-csi-node.bin                      release-staging/${{ matrix.artifact_app }}
           cp build/partition_table/partition-table.bin     release-staging/${{ matrix.artifact_pt }}
-          if [ "${{ matrix.variant }}" = "8mb" ]; then
+          if [ "${{ matrix.variant }}" = "8mb" ] || [ "${{ matrix.variant }}" = "8mb-spiram" ]; then
             cp build/bootloader/bootloader.bin             release-staging/bootloader.bin
             cp build/ota_data_initial.bin                  release-staging/ota_data_initial.bin
           fi
